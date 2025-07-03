@@ -5,47 +5,52 @@ public class BankAccount {
     private final String bankAccountName;
     private double availableBalance;
 
-    BankAccount(int accountNumber, String bankAccountName, double availableBalance){
+    public BankAccount(int accountNumber, String bankAccountName, double availableBalance) {
         this.accountNumber = accountNumber;
         this.bankAccountName = bankAccountName;
-        this.availableBalance = availableBalance;
-    }
-
-    BankAccount(int accountNumber, String bankAccountName){
-        this.accountNumber = accountNumber;
-        this.bankAccountName = bankAccountName;
-    }
-
-    public void deposit(double depositAmount){
-        if (availableBalance <= 0){
-            System.out.println("Please Enter a Valid Number");
-        }else {
-            System.out.println("You have deposit: " + depositAmount );
-            availableBalance += depositAmount;
+        if (availableBalance < 0) {
+            System.out.println("Initial balance can't be negative. Setting to 0.");
+            this.availableBalance = 0;
+        } else {
+            this.availableBalance = availableBalance;
         }
     }
 
-    public void withDraw( double withdrawAmount){
-        if (availableBalance <= 0 || withdrawAmount > availableBalance){
-            System.out.println("Please Input a Valid Number");
-        }else {
-                availableBalance -= withdrawAmount;
-                System.out.println("Your Available Balance: " + this.availableBalance);
+    public BankAccount(int accountNumber, String bankAccountName) {
+        this(accountNumber, bankAccountName, 0); // Default to 0 balance
+    }
 
-            }
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid deposit amount. Must be greater than 0.");
+        } else {
+            availableBalance += amount;
+            System.out.printf("Successfully deposited %.2f. New balance: %.2f\n", amount, availableBalance);
         }
-    public void displayInformation(){
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid withdrawal amount.");
+        } else if (amount > availableBalance) {
+            System.out.println("Insufficient funds.");
+        } else {
+            availableBalance -= amount;
+            System.out.printf("Successfully withdrew %.2f. Remaining balance: %.2f\n", amount, availableBalance);
+        }
+    }
+
+    public void displayInformation() {
         System.out.println("Account Number: " + accountNumber);
-        System.out.println("Bank Account Name: " + bankAccountName);
-        System.out.println("Available Balance: " + availableBalance);
+        System.out.println("Holder Name: " + bankAccountName);
+        System.out.printf("Balance: %.2f\n", availableBalance);
     }
 
     public int getAccountNumber() {
         return accountNumber;
     }
-    public void displayBalance(){
-        System.out.println("Your Balance: "+ availableBalance);
+
+    public double getAvailableBalance() {
+        return availableBalance;
     }
 }
-
-
